@@ -46,12 +46,13 @@ class VideoDownloader:
         format_spec = 'best'
         if quality != 'best':
             if quality.endswith('p'):
-                format_spec = f'bestvideo[height<={quality[:-1]}]+bestaudio/best[height<={quality[:-1]}]'
+                format_spec = f'bestvideo[height<={quality[:-1]}][ext=mp4]+bestaudio[ext=m4a]/best[height<={quality[:-1]}][ext=mp4]/best'
             else:
                 format_spec = quality
                 
         opts = {
             'format': format_spec,
+            'merge_output_format': 'mp4',  # 强制输出 MP4 格式
             'cookiesfrombrowser': ('chrome',),  # Always try to use Chrome cookies
             'progress_hooks': [self._progress_hook],
             'quiet': True,  # Suppress yt-dlp's output

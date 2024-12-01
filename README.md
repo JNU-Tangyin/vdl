@@ -5,6 +5,8 @@ A powerful command-line tool for downloading videos from multiple platforms incl
 
 ## Quick Start (Portable Executables) | 快速开始（便携版）
 
+Latest Release | 最新版本：[v0.2.0](https://github.com/JNU-Tangyin/vdl/releases/tag/v0.2.0)
+
 ### Windows Users | Windows 用户
 
 1. Download `vdl.exe` from the latest release

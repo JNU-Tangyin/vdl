@@ -19,7 +19,7 @@ A powerful command-line tool for downloading videos from multiple platforms incl
 4. Run commands directly:
    直接运行命令：
 ```batch
-vdl.exe download https://www.youtube.com/watch?v=VIDEO_ID
+vdl.exe https://www.youtube.com/watch?v=VIDEO_ID
 ```
 
 ### macOS Users | macOS 用户
@@ -42,152 +42,130 @@ vdl.exe download https://www.youtube.com/watch?v=VIDEO_ID
 6. Run commands directly:
    直接运行命令：
 ```bash
-./vdl download https://www.youtube.com/watch?v=VIDEO_ID
+./vdl https://www.youtube.com/watch?v=VIDEO_ID
 ```
 
 Note: On macOS, you might need to allow the executable in System Settings > Security & Privacy the first time you run it.
 注意：在 macOS 上首次运行时，可能需要在系统设置 > 安全性与隐私中允许运行此应用程序。
 
-## Features | 功能特点
+## Usage | 使用方法
 
-- Download videos from multiple platforms (YouTube, Bilibili)
-  支持多平台视频下载（YouTube、Bilibili）
+### Basic Commands | 基本命令
 
-- Select video quality (e.g., 1080p, 720p)
-  可选择视频质量（如 1080p、720p）
-
-- List available video formats
-  列出可用视频格式
-
-- Progress bar with download status
-  下载进度条显示
-
-- Browser cookie authentication support
-  支持浏览器 cookie 认证
-
-- Custom output filename support
-  支持自定义输出文件名
-
-## Usage Examples | 使用示例
-
-1. Download a video in best quality:
-   下载最佳质量视频：
+1. Download a video (default action) | 下载视频（默认操作）
 ```bash
-vdl download https://www.youtube.com/watch?v=VIDEO_ID
+vdl <url>
+# Example: vdl https://www.youtube.com/watch?v=VIDEO_ID
 ```
 
-2. Download with specific quality:
-   指定质量下载：
+2. List available video formats | 列出可用的视频格式
 ```bash
-vdl download https://www.youtube.com/watch?v=VIDEO_ID --quality 1080p
+vdl formats <url>
+# Example: vdl formats https://www.youtube.com/watch?v=VIDEO_ID
 ```
 
-3. List available formats:
-   列出可用格式：
-```bash
-vdl formats https://www.youtube.com/watch?v=VIDEO_ID
-```
-
-4. Show supported platforms:
-   显示支持的平台：
+3. Show supported platforms | 显示支持的平台
 ```bash
 vdl supported
 ```
 
-### Advanced Options | 高级选项
+### Options | 选项
 
-- Set custom output filename:
-  设置自定义输出文件名：
+- `--quality`: Select video quality (e.g., 1080p, 720p)
+  选择视频质量（如 1080p、720p）
 ```bash
-vdl download URL --output "my_video.mp4"
+vdl --quality 1080p <url>
 ```
 
-- Download with subtitles:
-  下载字幕：
+- `--output` or `-o`: Custom output filename
+  自定义输出文件名
 ```bash
-vdl download URL --subtitle
+vdl -o "video.mp4" <url>
 ```
 
-- Download playlist:
-  下载播放列表：
+- `--subtitle/--no-subtitle`: Download subtitles if available
+  下载字幕（如果可用）
 ```bash
-vdl download URL --playlist
+vdl --subtitle <url>
 ```
 
-## Building from Source | 从源码构建
-
-### Prerequisites | 前置要求
-
-- Python 3.11 or higher | Python 3.11 或更高版本
-- git
-
-### Steps | 步骤
-
-1. Clone the repository:
-   克隆仓库：
+- `--playlist/--no-playlist`: Download as playlist
+  下载为播放列表
 ```bash
-git clone https://github.com/JNU-Tangyin/vdl.git
-cd vdl
+vdl --playlist <url>
 ```
 
-2. Run the build script:
-   运行构建脚本：
-```bash
-# On Windows | Windows 系统
-python build.py
+## Features | 功能特点
 
-# On macOS | macOS 系统
-python3 build.py
-```
-
-The build script will:
-构建脚本将：
-
-- Set up a virtual environment
-  设置虚拟环境
-
-- Install dependencies
-  安装依赖
-
-- Create a portable executable
-  创建便携式可执行文件
-
-- Create a DMG installer (macOS only)
-  创建 DMG 安装程序（仅 macOS）
+- 🌐 Multi-platform support (YouTube, Bilibili)
+  多平台支持（YouTube、Bilibili）
+- 🎥 Flexible quality selection
+  灵活的质量选择
+- 📝 Subtitle download support
+  支持下载字幕
+- 📋 Playlist download support
+  支持下载播放列表
+- 🔒 Browser cookie authentication
+  浏览器 cookie 认证
+- 📊 Progress tracking
+  进度跟踪
+- 🎨 Beautiful terminal output
+  美观的终端输出
 
 ## Development | 开发
 
-1. Create and activate virtual environment:
-   创建并激活虚拟环境：
+### Requirements | 依赖要求
+
+- Python 3.11+
+- pip (Python package manager)
+
+### Setup | 设置
+
+1. Clone the repository | 克隆仓库
 ```bash
-python3 -m venv venv
-source venv/bin/activate  # On Windows | Windows: venv\Scripts\activate
+git clone https://github.com/yourusername/vdl.git
+cd vdl
 ```
 
-2. Install development dependencies:
-   安装开发依赖：
+2. Install dependencies | 安装依赖
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Run tests:
-   运行测试：
+### Build | 构建
+
+Run the build script to create standalone executables:
+运行构建脚本创建独立可执行文件：
+
 ```bash
-pytest tests/ -v --cov=vdl
+python build.py
 ```
 
-## Requirements | 系统要求
+This will create:
+这将创建：
 
-- ffmpeg (for video processing)
-  ffmpeg（用于视频处理）
+- `dist/vdl`: Standalone executable (macOS/Linux)
+  独立可执行文件（macOS/Linux）
+- `dist/VDL.dmg`: macOS installer
+  macOS 安装包
 
-- Chrome/Chromium (for cookie authentication)
-  Chrome/Chromium（用于 cookie 认证）
+## Credits | 致谢
+
+Built with:
+基于以下项目构建：
+
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp)
+  For video downloading | 提供视频下载功能
+
+- [Click](https://click.palletsprojects.com/)
+  For CLI interface | 提供命令行界面
+
+- [Rich](https://rich.readthedocs.io/)
+  For terminal formatting | 提供终端格式化
 
 ## License | 许可证
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-本项目采用 MIT 许可证 - 详见 LICENSE 文件。
+MIT License
 
 ## Contributing | 贡献
 

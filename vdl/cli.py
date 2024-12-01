@@ -1,22 +1,20 @@
 import click
 from rich.console import Console
 from rich.table import Table
-from .downloader import VideoDownloader, VideoDownloadError
+from vdl.downloader import VideoDownloader, VideoDownloadError
+from urllib.parse import urlparse
 
 console = Console()
 
-@click.group()
-def cli():
-    """VDL - Video Downloader CLI"""
-    pass
+def is_url(string):
+    """Check if a string is a URL"""
+    try:
+        result = urlparse(string)
+        return all([result.scheme, result.netloc])
+    except:
+        return False
 
-@cli.command()
-@click.argument('url')
-@click.option('--quality', default='best', help='Video quality (e.g., 1080p, 720p)')
-@click.option('--output', '-o', help='Output filename template')
-@click.option('--subtitle/--no-subtitle', default=False, help='Download subtitles if available')
-@click.option('--playlist/--no-playlist', default=False, help='Download as playlist')
-def download(url, quality, output, subtitle, playlist):
+def download_video(url, quality, output, subtitle, playlist):
     """Download video from URL"""
     try:
         downloader = VideoDownloader()
@@ -29,6 +27,24 @@ def download(url, quality, output, subtitle, playlist):
         console.print(f"[red]Download Error: {str(e)}[/red]")
     except Exception as e:
         console.print(f"[red]Unexpected Error: {str(e)}[/red]")
+
+@click.group()
+def cli():
+    """VDL - Video Downloader CLI"""
+    pass
+
+@cli.command(name='')
+@click.option('--quality', default='best', help='Video quality (e.g., 1080p, 720p)')
+@click.option('--output', '-o', help='Output filename template')
+@click.option('--subtitle/--no-subtitle', default=False, help='Download subtitles if available')
+@click.option('--playlist/--no-playlist', default=False, help='Download as playlist')
+@click.argument('url', required=True)
+def download(url, quality, output, subtitle, playlist):
+    """Download video from URL"""
+    if not is_url(url):
+        click.echo(f"Error: '{url}' is not a valid URL")
+        return
+    download_video(url, quality, output, subtitle, playlist)
 
 @cli.command()
 @click.argument('url')
@@ -62,19 +78,16 @@ def formats(url):
 @cli.command()
 def supported():
     """List supported platforms"""
-    try:
-        downloader = VideoDownloader()
-        table = Table(show_header=True, header_style="bold magenta")
-        table.add_column("Platform")
-        table.add_column("Domain")
-        
-        for domain, platform in downloader.SUPPORTED_PLATFORMS.items():
-            table.add_row(platform, domain)
-        
-        console.print("\n[green]Supported Platforms:[/green]")
-        console.print(table)
-    except Exception as e:
-        console.print(f"[red]Error: {str(e)}[/red]")
+    downloader = VideoDownloader()
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column("Platform")
+    table.add_column("Domain")
+    
+    for domain, platform in downloader.SUPPORTED_PLATFORMS.items():
+        table.add_row(platform, domain)
+    
+    console.print("\n[green]Supported Platforms:[/green]")
+    console.print(table)
 
 if __name__ == '__main__':
     cli()

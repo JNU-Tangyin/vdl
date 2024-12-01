@@ -52,7 +52,7 @@ class VideoDownloader:
                 
         opts = {
             'format': format_spec,
-            'cookiesfrombrowser': ('chrome',) if self.cookies else None,
+            'cookiesfrombrowser': ('chrome',),  # Always try to use Chrome cookies
             'progress_hooks': [self._progress_hook],
             'quiet': True,  # Suppress yt-dlp's output
             'no_warnings': True  # Suppress warnings
@@ -79,7 +79,6 @@ class VideoDownloader:
     def download(self, url: str, quality: str = 'best', output: Optional[str] = None):
         """Download video from URL"""
         try:
-            self._get_platform(url)  # Validate URL
             opts = self._get_ydl_opts(quality, output)
             
             with Progress() as progress:
